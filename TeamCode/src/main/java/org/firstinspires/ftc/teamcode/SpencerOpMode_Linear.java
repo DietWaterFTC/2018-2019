@@ -85,21 +85,26 @@ public class SpencerOpMode_Linear extends LinearOpMode {
             // Setup a variable for each drive wheel to save power level for telemetry
             double leftPower;
             double rightPower;
+            double nitro;
 
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
 
             // POV Mode uses left stick to go forward, and right stick to turn.
-            // - This uses basic math to combine motions and is easier to drive straight.
-            double drive = -gamepad1.left_stick_y;
-            double turn  =  gamepad1.right_stick_x;
+            // - This uses basic math to combine mot.ions and is easier to drive straight.
+            //double drive = -gamepad1.left_stick_y;
+            //double turn  =  gamepad1.right_stick_x;
             //leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
             //rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            leftPower  = -gamepad1.left_stick_y ;
-            rightPower = -gamepad1.right_stick_y ;
+            nitro = (gamepad1.right_trigger * 2) + 1;
+            leftPower  = (-gamepad1.left_stick_y / 5) * nitro;
+            rightPower = (-gamepad1.right_stick_y / 5) * nitro;
+
+            leftPower = Range.clip(leftPower, -1.0, 1.0) ;
+            rightPower = Range.clip(rightPower, -1.0, 1.0) ;
 
             // Send calculated power to wheels
             leftDrive.setPower(leftPower);
