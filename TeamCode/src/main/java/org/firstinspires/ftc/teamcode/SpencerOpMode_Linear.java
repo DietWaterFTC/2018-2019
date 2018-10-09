@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Linear OpMode", group="Linear Opmode")
+@TeleOp(name="6 Wheel Base, Basic POV", group="Linear Opmode")
 //@Disabled
 public class SpencerOpMode_Linear extends LinearOpMode {
 
@@ -94,18 +94,15 @@ public class SpencerOpMode_Linear extends LinearOpMode {
             // - This uses basic math to combine mot.ions and is easier to drive straight.
             double drive = -gamepad1.left_stick_y / 2;
             double turn  = -gamepad1.right_stick_x / 2;
+            if (drive != 0) {
+                turn  = -gamepad1.right_stick_x / 2;
+            } else {
+                turn = -gamepad1.right_stick_x / 3;
+            }
+
             nitro = (gamepad1.right_trigger * 2) + 1;
-            leftPower = Range.clip((drive + turn) * nitro, -1.0, 1.0) ;
+            leftPower = Range.clip((drive + turn) * nitro , -1.0, 1.0) ;
             rightPower = Range.clip((drive - turn) * nitro, -1.0, 1.0) ;
-
-            // Tank Mode uses one stick to control each wheel.
-            // - This requires no math, but it is hard to drive forward slowly and keep straight.
-
-            //leftPower  = (-gamepad1.left_stick_y / 2) * nitro;
-            //rightPower = (-gamepad1.right_stick_y / 2) * nitro;
-
-            //leftPower = Range.clip(leftPower, -1.0, 1.0) ;
-            //rightPower = Range.clip(rightPower, -1.0, 1.0) ;
 
             // Send calculated power to wheels
             leftDrive.setPower(leftPower);
