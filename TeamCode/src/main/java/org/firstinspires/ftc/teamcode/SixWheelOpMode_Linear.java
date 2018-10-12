@@ -52,7 +52,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="6 Wheel Base, Basic POV", group="Linear Opmode")
 //@Disabled
-public class SpencerOpMode_Linear extends LinearOpMode {
+public class SixWheelOpMode_Linear extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();

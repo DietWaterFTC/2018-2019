@@ -52,18 +52,24 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
+
 @TeleOp(name = "Sensor: MR Color", group = "Sensor")
 //@Disabled
 public class SensorMRColor_Test extends LinearOpMode {
 
   ColorSensor colorSensor;    // Hardware Device Object
 
+    int ball = 1;
+    int square = 2;
+    int neither = 3;
 
   @Override
   public void runOpMode() {
 
     // hsvValues is an array that will hold the hue, saturation, and value information.
     float hsvValues[] = {0F,0F,0F};
+
+    int type = neither;
 
     // values is a reference to the hsvValues array.
     final float values[] = hsvValues;
@@ -111,23 +117,33 @@ public class SensorMRColor_Test extends LinearOpMode {
       Color.RGBToHSV(colorSensor.red() * 8, colorSensor.green() * 8, colorSensor.blue() * 8, hsvValues);
 
       // send the info back to driver station using telemetry function.
-      telemetry.addData("LED", bLedOn ? "On" : "Off");
-      telemetry.addData("Clear", colorSensor.alpha());
-      telemetry.addData("Red  ", colorSensor.red());
-      telemetry.addData("Green", colorSensor.green());
-      telemetry.addData("Blue ", colorSensor.blue());
-      telemetry.addData("Hue", hsvValues[0]);
+      //telemetry.addData("LED", bLedOn ? "On" : "Off");
+      //telemetry.addData("Clear", colorSensor.alpha());
+      //telemetry.addData("Red  ", colorSensor.red());
+      //telemetry.addData("Green", colorSensor.green());
+      //telemetry.addData("Blue ", colorSensor.blue());
+      //telemetry.addData("Hue", hsvValues[0]);
 
-      // change the background color to match the color detected by the RGB sensor.
-      // pass a reference to the hue, saturation, and value array as an argument
-      // to the HSVToColor method.
-      relativeLayout.post(new Runnable() {
-        public void run() {
-          relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
-        }
-      });
+        // Change background color
+          // relativeLayout.post(new Runnable() {
+      //  public void run() {
+      //    relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
+      //  }
+      //});
 
-      telemetry.update();
+          if (colorSensor.alpha() > 15) {
+              if (colorSensor.blue() < 10) {
+                  type = square;
+                  telemetry.addData("TYPE: ", "SQUARE");
+              } else {
+                  type = ball;
+                  telemetry.addData("TYPE: ", "BALL");
+              }
+          } else {
+              type = neither;
+              telemetry.addData("TYPE: ", "NEITHER");
+          }
+          telemetry.update();
     }
 
     // Set the panel back to the default color
