@@ -89,12 +89,12 @@ public class VuforiaNavigation_Test extends LinearOpMode
         Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 2);
 
         // Setup the target to be tracked
-        target = visionTargets.get(0); // 0 corresponds to the moon target
-        target.setName("Moon Target");
-        target.setLocation(createMatrix(0, 500, 0, 90, 0, 90));
+        target = visionTargets.get(2); // 0 corresponds to the moon target
+        target.setName("Rover Target");
+        target.setLocation(createMatrix(0, 1829, 0, 90, 0, 90));
 
         // Set phone location on robot
-        phoneLocation = createMatrix(0, 225, 0, 90, 0, 0);
+        phoneLocation = createMatrix(0, 0, 0, 0, 0, 0);
 
         // Setup listener and inform it of phone information
         listener = (VuforiaTrackableDefaultListener) target.getListener();
@@ -115,4 +115,7 @@ public class VuforiaNavigation_Test extends LinearOpMode
     {
         return matrix.formatAsTransform();
     }
+
+    // Convert inches into millimeters
+    private int itom(double inches) { return (int) (Math.round(inches)); }
 }
