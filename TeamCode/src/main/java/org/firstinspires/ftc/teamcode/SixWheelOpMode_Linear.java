@@ -58,6 +58,8 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
+    private DcMotor armBase = null;
+    private DcMotor armExtend = null;
 
     @Override
     public void runOpMode() {
@@ -69,11 +71,15 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        armBase = hardwareMap.get(DcMotor.class, "arm_base");
+        armExtend = hardwareMap.get(DcMotor.class, "arm_extend");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        armBase.setDirection(DcMotor.Direction.FORWARD);
+        armExtend.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -85,6 +91,8 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
             // Setup a variable for each drive wheel to save power level for telemetry
             double leftPower;
             double rightPower;
+            double armBasePower;
+            double armExtendPower;
             double nitro;
 
             // Choose to drive using either Tank Mode, or POV Mode
@@ -101,16 +109,25 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
             }
 
             nitro = (gamepad1.right_trigger * 2) + 1;
+
+            armBasePower = gamepad2.left_stick_y;
+            armExtendPower = gamepad2.right_stick_y;
+
             leftPower = Range.clip((drive + turn) * nitro , -1.0, 1.0) ;
             rightPower = Range.clip((drive - turn) * nitro, -1.0, 1.0) ;
+            armBasePower = Range.clip(armBasePower, -1.0, 1.0) ;
+            armExtendPower = Range.clip(armExtendPower, -1.0, 1.0) ;
 
             // Send calculated power to wheels
             leftDrive.setPower(leftPower);
             rightDrive.setPower(rightPower);
+            armBase.setPower(armBasePower);
+            armExtend.setPower(armExtendPower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            telemetry.addData("Drive Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            telemetry.addData("Drive Motors", "base (%.2f), extend (%.2f)", armBasePower, armExtendPower);
             telemetry.update();
         }
     }
