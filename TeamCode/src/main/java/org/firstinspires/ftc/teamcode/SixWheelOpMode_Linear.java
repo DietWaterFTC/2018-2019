@@ -110,13 +110,13 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
 
             nitro = (gamepad1.right_trigger * 2) + 1;
 
-            armBasePower = gamepad2.left_stick_y;
-            armExtendPower = gamepad2.right_stick_y;
+            armBasePower = gamepad2.left_stick_y/4;
+            armExtendPower = gamepad2.right_stick_y/4;
 
             leftPower = Range.clip((drive + turn) * nitro , -1.0, 1.0) ;
             rightPower = Range.clip((drive - turn) * nitro, -1.0, 1.0) ;
-            armBasePower = Range.clip(armBasePower, -1.0, 1.0) ;
-            armExtendPower = Range.clip(armExtendPower, -1.0, 1.0) ;
+            armBasePower = Range.clip(armBasePower, -0.5, 0.5) ;
+            armExtendPower = Range.clip(armExtendPower, -0.5, 0.5) ;
 
             // Send calculated power to wheels
             leftDrive.setPower(leftPower);
