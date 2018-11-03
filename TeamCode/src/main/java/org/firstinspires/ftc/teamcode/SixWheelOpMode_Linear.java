@@ -33,22 +33,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-
-
-/**
- * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
- * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
- * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
- * class is instantiated on the Robot Controller and executed.
- *
- * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
- * It includes all the skeletal structure that all linear OpModes contain.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
 
 @TeleOp(name="6 Wheel Base, Basic POV", group="Linear Opmode")
 //@Disabled
@@ -60,6 +47,7 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
     private DcMotor rightDrive = null;
     private DcMotor armBase = null;
     private DcMotor armExtend = null;
+    private DcMotor armCollector = null;
 
     @Override
     public void runOpMode() {
@@ -73,6 +61,7 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         armBase = hardwareMap.get(DcMotor.class, "arm_base");
         armExtend = hardwareMap.get(DcMotor.class, "arm_extend");
+        armCollector = hardwareMap.get(DcMotor.class, "arm_collector");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -80,6 +69,7 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
         armBase.setDirection(DcMotor.Direction.FORWARD);
         armExtend.setDirection(DcMotor.Direction.FORWARD);
+        armCollector.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -94,40 +84,57 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
             double armBasePower;
             double armExtendPower;
             double nitro;
+            double armNitro;
+            double armCollectorPower;
+            boolean armCollectorToggle = false;
 
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine mot.ions and is easier to drive straight.
-            double drive = -gamepad1.left_stick_y / 2;
-            double turn  = -gamepad1.right_stick_x / 2;
+            double drive = gamepad1.left_stick_y / 2;
+            double turn  = gamepad1.right_stick_x / 2;
             if (drive != 0) {
-                turn  = -gamepad1.right_stick_x / 2;
+                turn  = gamepad1.right_stick_x / 2;
             } else {
-                turn = -gamepad1.right_stick_x / 3;
+                turn = gamepad1.right_stick_x / 3;
             }
 
             nitro = (gamepad1.right_trigger * 2) + 1;
 
             armBasePower = gamepad2.left_stick_y/4;
             armExtendPower = gamepad2.right_stick_y/4;
+            armNitro = gamepad2.right_trigger + 1;
+
+            if (gamepad2.a) {
+                armCollectorToggle = !armCollectorToggle;
+            }
+
+            if (armCollectorToggle) {
+                armCollectorPower = .75;
+            } else {
+                armCollectorPower = 0;
+            }
 
             leftPower = Range.clip((drive + turn) * nitro , -1.0, 1.0) ;
             rightPower = Range.clip((drive - turn) * nitro, -1.0, 1.0) ;
-            armBasePower = Range.clip(armBasePower, -0.5, 0.5) ;
-            armExtendPower = Range.clip(armExtendPower, -0.5, 0.5) ;
+            armBasePower = Range.clip(armBasePower * armNitro, -0.5, 0.5) ;
+            armExtendPower = Range.clip(armExtendPower * armNitro, -0.5, 0.5) ;
+            armCollectorPower = Range.clip(armCollectorPower, -1, 1);
 
             // Send calculated power to wheels
             leftDrive.setPower(leftPower);
             rightDrive.setPower(rightPower);
             armBase.setPower(armBasePower);
             armExtend.setPower(armExtendPower);
+            armCollector.setPower(armCollectorPower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Drive Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-            telemetry.addData("Drive Motors", "base (%.2f), extend (%.2f)", armBasePower, armExtendPower);
+            telemetry.addData("Arm Motors", "base (%.2f), extend (%.2f)", armBasePower, armExtendPower);
+            telemetry.addData("Arm Collector", "power (%.2f)", armCollectorPower);
             telemetry.update();
         }
     }

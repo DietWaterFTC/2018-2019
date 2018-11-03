@@ -89,7 +89,7 @@ public class VuforiaNavigation_Test extends LinearOpMode
         Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 2);
 
         // Setup the target to be tracked
-        target = visionTargets.get(2); // 0 corresponds to the moon target
+        target = visionTargets.get(2); // 2 corresponds to the rover target
         target.setName("Rover Target");
         target.setLocation(createMatrix(0, 1829, 0, 90, 0, 90));
 
