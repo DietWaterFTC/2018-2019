@@ -65,8 +65,8 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
         armBase.setDirection(DcMotor.Direction.FORWARD);
         armExtend.setDirection(DcMotor.Direction.FORWARD);
         armCollector.setDirection(DcMotor.Direction.FORWARD);
