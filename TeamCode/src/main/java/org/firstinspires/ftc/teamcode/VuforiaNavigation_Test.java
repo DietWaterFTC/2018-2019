@@ -86,7 +86,7 @@ public class VuforiaNavigation_Test extends LinearOpMode
         // These are the vision targets that we want to use
         // The string needs to be the name of the appropriate .xml file in the assets folder
         visionTargets = vuforiaLocalizer.loadTrackablesFromAsset("2018-PicturesDB");
-        Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 2);
+        Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 1);
 
         // Setup the target to be tracked
         target = visionTargets.get(2); // 2 corresponds to the rover target
