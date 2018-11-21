@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -48,6 +49,7 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
     private DcMotor armBase = null;
     private DcMotor armExtend = null;
     private DcMotor armCollector = null;
+    private Servo tokenDelivery = null;
 
     @Override
     public void runOpMode() {
@@ -62,6 +64,7 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
         armBase = hardwareMap.get(DcMotor.class, "arm_base");
         armExtend = hardwareMap.get(DcMotor.class, "arm_extend");
         armCollector = hardwareMap.get(DcMotor.class, "arm_collector");
+        tokenDelivery = hardwareMap.get(Servo.class, "token_delivery");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -88,8 +91,11 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
             double armCollectorPower;
             boolean armCollectorToggle = false;
 
-            // Choose to drive using either Tank Mode, or POV Mode
-            // Comment out the method that's not used.  The default below is POV.
+            if (gamepad1.b) {
+                tokenDelivery.setPosition(.7);
+            } else {
+                tokenDelivery.setPosition(.5);
+            }
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine mot.ions and is easier to drive straight.
