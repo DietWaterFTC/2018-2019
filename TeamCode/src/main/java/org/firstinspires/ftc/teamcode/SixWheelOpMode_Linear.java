@@ -81,7 +81,7 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
 
             armBasePower = gamepad2.left_stick_y/4;
             armExtendPower = gamepad2.right_stick_y/4;
-            armNitro = (gamepad2.right_trigger * 2) + 1;
+            armNitro = (gamepad2.right_trigger * 4) + 1;
 			
 			// Turns on and off the arm collector end.
             if (gamepad2.a) {

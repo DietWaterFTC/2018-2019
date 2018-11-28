@@ -64,6 +64,8 @@ public class VuforiaNavigation_Test extends LinearOpMode
             robotY = coordinates[1];
             robotAngle = Orientation.getOrientation(lastKnownLocation, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
 
+            //if(robotX )
+
             // Send information about whether the target is visible, and where the robot is
             telemetry.addData("Tracking " + target.getName(), listener.isVisible());
             telemetry.addData("Last Known Location", "X:"+robotX + "Y:"+robotY);
