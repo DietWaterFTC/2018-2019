@@ -92,7 +92,7 @@ public class VuforiaNavigation_Test extends LinearOpMode
         target = visionTargets.get(2); // 2 corresponds to the rover target
         target.setName("Rover Target");
         target.setLocation(createMatrix(0, 1829, 0, 90, 0, 90));
-v
+
         // Set phone location on robot
         phoneLocation = createMatrix(0, 0, 0, 0, 0, 0);
 
