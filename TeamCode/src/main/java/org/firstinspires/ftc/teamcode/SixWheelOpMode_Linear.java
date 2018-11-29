@@ -59,18 +59,17 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
             double nitro;
             double armNitro;
             double armCollectorPower;
-            boolean armCollectorToggle = false;
 			
-			// Temporary token dilivery code.
+			// Temporary token delivery code.
             if (gamepad1.b) {
-                tokenDelivery.setPosition(.7);
+                tokenDelivery.setPosition(.1);
             } else {
                 tokenDelivery.setPosition(.5);
             }
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             double drive = gamepad1.left_stick_y / 2;
-            double turn  = gamepad1.right_stick_x / 2;
+            double turn;
             if (drive != 0) {
                 turn  = gamepad1.right_stick_x / 2;
             } else {
@@ -85,11 +84,11 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
 			
 			// Turns on and off the arm collector end.
             if (gamepad2.a) {
-                armCollectorToggle = !armCollectorToggle;
-            }
-
-            if (armCollectorToggle) {
                 armCollectorPower = .75;
+            } else if (gamepad2.b) {
+                armCollectorPower = -.75;
+            } else if (gamepad2.y) {
+                armCollectorPower = 1;
             } else {
                 armCollectorPower = 0;
             }
