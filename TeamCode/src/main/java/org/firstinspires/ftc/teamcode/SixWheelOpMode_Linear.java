@@ -66,8 +66,8 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
             double nitro;
             double armNitro;
             double armCollectorPower;
-            double lifterDownPower;
-            double lifterUpPower;
+            double lifterDownPower = 0;
+            double lifterUpPower = 0;
 			
 			// Temporary token delivery code.
             if (gamepad1.b) {
@@ -118,8 +118,8 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
             armBasePower = Range.clip(armBasePower * armNitro, -1, 1) ;
             armExtendPower = Range.clip(armExtendPower * armNitro, -1.0, 1.0) ;
             armCollectorPower = Range.clip(armCollectorPower, -1, 1);
-            lifterDownPower = Range.clip(lifterDownPower, -1, 1);
-            lifterUpPower = Range.clip(lifterUpPower, -1, 1);
+            lifterDownPower = Range.clip(lifterDownPower, -1.0, 1.0);
+            lifterUpPower = Range.clip(lifterUpPower, -1.0, 1.0);
 
             // Send calculated power to wheels
             leftDrive.setPower(leftPower);
