@@ -20,6 +20,8 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
     private DcMotor armBaseLeft = null;
     private DcMotor armExtend = null;
     private DcMotor armCollector = null;
+    private DcMotor lifterDown = null;
+    private DcMotor lifterUp = null;
     private Servo tokenDelivery = null;
 
     @Override
@@ -34,6 +36,8 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
         armBaseRight = hardwareMap.get(DcMotor.class, "arm_base_right");
         armExtend = hardwareMap.get(DcMotor.class, "arm_extend");
         armCollector = hardwareMap.get(DcMotor.class, "arm_collector");
+        lifterDown = hardwareMap.get(DcMotor.class, "lifter_down");
+        lifterUp = hardwareMap.get(DcMotor.class, "lifter_up");
         tokenDelivery = hardwareMap.get(Servo.class, "token_delivery");
 		
 		// Set direction of all motors
@@ -43,6 +47,9 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
         armBaseLeft.setDirection(DcMotor.Direction.REVERSE);
         armExtend.setDirection(DcMotor.Direction.FORWARD);
         armCollector.setDirection(DcMotor.Direction.REVERSE);
+        lifterDown.setDirection(DcMotor.Direction.FORWARD);
+        lifterUp.setDirection(DcMotor.Direction.FORWARD);
+
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -59,12 +66,24 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
             double nitro;
             double armNitro;
             double armCollectorPower;
+            double lifterDownPower;
+            double lifterUpPower;
 			
 			// Temporary token delivery code.
             if (gamepad1.b) {
                 tokenDelivery.setPosition(.1);
             } else {
                 tokenDelivery.setPosition(.5);
+            }
+
+            // Lifter code
+            if (gamepad1.dpad_down) {
+                lifterDownPower = 1;
+            } else if (gamepad1.dpad_up) {
+                lifterUpPower = .5;
+            } else {
+                lifterDownPower = 0;
+                lifterUpPower = 0;
             }
 
             // POV Mode uses left stick to go forward, and right stick to turn.
@@ -99,6 +118,8 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
             armBasePower = Range.clip(armBasePower * armNitro, -1, 1) ;
             armExtendPower = Range.clip(armExtendPower * armNitro, -1.0, 1.0) ;
             armCollectorPower = Range.clip(armCollectorPower, -1, 1);
+            lifterDownPower = Range.clip(lifterDownPower, -1, 1);
+            lifterUpPower = Range.clip(lifterUpPower, -1, 1);
 
             // Send calculated power to wheels
             leftDrive.setPower(leftPower);
@@ -107,12 +128,15 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
             armBaseRight.setPower(armBasePower);
             armExtend.setPower(armExtendPower);
             armCollector.setPower(armCollectorPower);
+            lifterDown.setPower(lifterDownPower);
+            lifterUp.setPower(lifterUpPower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Drive Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.addData("Arm Motors", "base (%.2f), extend (%.2f)", armBasePower, armExtendPower);
             telemetry.addData("Arm Collector", "power (%.2f)", armCollectorPower);
+            telemetry.addData("Lifter UP/DOWN", "up (%.2f), down (%.2f)",lifterUpPower, lifterDownPower);
             telemetry.update();
         }
     }

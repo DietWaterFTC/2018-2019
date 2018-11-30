@@ -74,23 +74,13 @@ public class Autonomous_Linear extends LinearOpMode {
 
             setForward(9);
 
-            setStop();
-
             setLeft(18);
-
-            setStop();
 
             setForward(20);
 
-            setStop();
-
             setLeft(22);
 
-            setStop();
-
             setBackward(32);
-
-            setStop();
 
             sleep(10000);
 
@@ -110,21 +100,33 @@ public class Autonomous_Linear extends LinearOpMode {
         leftDrive.setPower(.5);
         rightDrive.setPower(.5);
         sleep(distance * 31);
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        sleep(1000);
     }
 
     public void setBackward(long distance) {
         leftDrive.setPower(-.5);
         rightDrive.setPower(-.5);
         sleep(distance * 31);
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        sleep(1000);
     }
 
     public void setLeft(long distance) {
         rightDrive.setPower(.5);
         sleep(distance * 31);
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        sleep(1000);
     }
 
     public void setRight(long distance) {
         leftDrive.setPower(.5);
         sleep(distance * 31);
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        sleep(1000);
     }
 }
