@@ -76,11 +76,13 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
                 tokenDelivery.setPosition(.5);
             }
 
-            // Lifter code
-            if (gamepad1.dpad_down) {
-                lifterDownPower = 1;
-            } else if (gamepad1.dpad_up) {
-                lifterUpPower = .5;
+            // Lifter controls
+            if (gamepad1.left_trigger > 0) {
+                lifterDownPower = gamepad1.left_trigger;
+                lifterUpPower = -gamepad1.left_trigger;
+            } else if (gamepad1.right_trigger > 0) {
+                lifterUpPower = gamepad1.right_trigger / 2;
+                lifterDownPower = -gamepad1.right_trigger / 2;
             } else {
                 lifterDownPower = 0;
                 lifterUpPower = 0;
@@ -95,7 +97,11 @@ public class SixWheelOpMode_Linear extends LinearOpMode {
                 turn = gamepad1.right_stick_x / 3;
             }
 
-            nitro = (gamepad1.right_trigger * 2) + 1;
+            if (gamepad1.right_bumper) {
+                nitro = 2;
+            } else {
+                nitro = 1;
+            }
 
             armBasePower = gamepad2.left_stick_y/4;
             armExtendPower = gamepad2.right_stick_y/4;
