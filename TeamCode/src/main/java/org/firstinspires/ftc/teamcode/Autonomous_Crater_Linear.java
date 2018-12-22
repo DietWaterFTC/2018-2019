@@ -32,7 +32,9 @@ public class Autonomous_Crater_Linear extends LinearOpMode {
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        tokenDelivery.setPosition(.5);
+        tokenDelivery.setPosition(.2);
+        //leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -43,25 +45,29 @@ public class Autonomous_Crater_Linear extends LinearOpMode {
 
             setStop();
 
-            setForward(14);
+            setForward(13);
 
-            setRight(20);
+            setRight(42);
 
-            setBackward(50);
+            setBackward(72);
 
             setLeft(10);
 
-            setBackward(40);
+            setBackward(75);
 
-            tokenDelivery.setPosition(.7);
+            setRight(8);
 
-            setForward(5);
+            tokenDelivery.setPosition(0);
 
-            sleep(10000);
+            setLeft(8);
+
+            setForward(20);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
+
+            break;
         }
     }
 
@@ -74,10 +80,14 @@ public class Autonomous_Crater_Linear extends LinearOpMode {
     public void setForward(long distance) {
         leftDrive.setPower(.5);
         rightDrive.setPower(.5);
-        sleep(distance * 31);
+        runtime.reset();
+        while(opModeIsActive() && runtime.milliseconds() < distance * 31) {
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.update();
+        }
         leftDrive.setPower(0);
         rightDrive.setPower(0);
-        sleep(1000);
+        //sleep(1000);
     }
 
     public void setBackward(long distance) {
